@@ -1,5 +1,5 @@
 {
-    "name": "podcasthosting/audiowaveform-client",
+    "name": "podcasthosting/audiowaveform-php-client",
     "description": "A PHP wrapper for easy access to the BBC project audiowaveform client.",
     "keywords": [
         "audio",
