@@ -1,0 +1,31 @@
+{
+    "name": "podcasthosting/audiowaveform-client",
+    "description": "A PHP wrapper for easy access to the BBC project audiowaveform client.",
+    "keywords": [
+        "audio",
+        "waveform",
+        "mp3",
+        "wav",
+        "audiowaveform",
+        "bbc"
+    ],
+    "homepage": "https://github.com/podcasthosting/audiowaveform-php-client",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Fabio Bacigalupo",
+            "email": "support@podcaster.de",
+            "homepage": "https://www.podcaster.de"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "podcasthosting\\AudiowaveformClient\\": "src/"
+        }
+    },
+    "require": {
+        "titasgailius/terminal": "^1.2"
+    }
+}

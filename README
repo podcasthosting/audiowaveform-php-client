@@ -1,0 +1,3 @@
+This project is pretty straight forward to use.
+It implements all the arguments from the commandline audiowaveform command as methods.
+The script calls the shell command. So audiowaveform has to be installed for this script to work.
