@@ -152,9 +152,11 @@ class AudiowaveformClient
     /**
      * @param string $binaryName
      */
-    public function setBinaryName(string $binaryName): void
+    public function setBinaryName(string $binaryName): AudiowaveformClient
     {
         $this->binaryName = $binaryName;
+
+        return $this;
     }
 
     /**
@@ -162,7 +164,7 @@ class AudiowaveformClient
      * or audition, which generates a green waveform on a dark background, similar to Adobe Audition.
      *
      * @param string $color
-     * @return void
+     * @return AudiowaveformClient
      */
     public function setColors(string $color)
     {
@@ -170,17 +172,21 @@ class AudiowaveformClient
             throw new \InvalidArgumentException("The color you passed is not valid. Allowed colors are 'audacity' or 'audition'.");
         }
         $this->addParam(['colors' => $color]);
+
+        return $this;
     }
 
     /**
      * When creating a waveform image, specifies the waveform color. If not given, the default color used is controlled by the setColors method.
      *
      * @param string $color
-     * @return void
+     * @return AudiowaveformClient
      */
     public function setWaveformColor(string $color)
     {
         $this->addParam(['waveform-color' => $this->checkRgbColorCode($color)]);
+
+        return $this;
     }
 
     /**
@@ -191,24 +197,28 @@ class AudiowaveformClient
      * and optional alpha transparency (00 to FF).
      *
      * @param string $color
-     * @return void
+     * @return AudiowaveformClient
      */
     public function setBorderColor(string $color)
     {
         $this->addParam(['waveform-color' => $this->checkRgbColorCode($color)]);
+
+        return $this;
     }
 
     /**
      * When creating a waveform image, specifies the background color.
      * If not given, the default color used is controlled by the setColors() method.
      *
-     * @see setColors
      * @param string $color
-     * @return void
+     * @return AudiowaveformClient
+     * @see setColors
      */
     public function setBackgroundColor(string $color)
     {
         $this->addParam(['background-color' => $this->checkRgbColorCode($color)]);
+
+        return $this;
     }
 
     /**
@@ -216,21 +226,25 @@ class AudiowaveformClient
      * If not given, the default color used is controlled by the setColors() method.
      *
      * @param string $color
-     * @return void
+     * @return AudiowaveformClient
      */
     public function setAxisLabelColor(string $color)
     {
         $this->addParam(['axis-label-color' => $this->checkRgbColorCode($color)]);
+
+        return $this;
     }
 
     /**
      * Disables status messages.
      *
-     * @return void
+     * @return AudiowaveformClient
      */
     public function setQuiet()
     {
         $this->addParam('quiet');
+
+        return $this;
     }
 
     /**
@@ -243,7 +257,7 @@ class AudiowaveformClient
      * Note that Opus support requires libsndfile 1.0.29 or later, so may not be available on all systems.
      *
      * @param string $name
-     * @return void
+     * @return AudiowaveformClient
      */
     public function setInputFilename(string $name)
     {
@@ -252,8 +266,14 @@ class AudiowaveformClient
         }
 
         $this->addParam(['input-filename' => $name]);
+
+        return $this;
     }
 
+    /**
+     * @param string $name
+     * @return AudiowaveformClient
+     */
     public function setInputFormat(string $name)
     {
         if (!in_array(strtolower(pathinfo($name, PATHINFO_EXTENSION)), self::$inputTypes)) {
@@ -261,8 +281,14 @@ class AudiowaveformClient
         }
 
         $this->addParam(['input-format' => $name]);
+
+        return $this;
     }
 
+    /**
+     * @param string $name
+     * @return AudiowaveformClient
+     */
     public function setOutputFilename(string $name)
     {
         if (!in_array(strtolower(pathinfo($name, PATHINFO_EXTENSION)), self::$outputTypes)) {
@@ -270,8 +296,14 @@ class AudiowaveformClient
         }
 
         $this->addParam(['output-filename' => $name]);
+
+        return $this;
     }
 
+    /**
+     * @param string $name
+     * @return AudiowaveformClient
+     */
     public function setOutputFormat(string $name)
     {
         if (!in_array(strtolower(pathinfo($name, PATHINFO_EXTENSION)), self::$outputTypes)) {
@@ -279,23 +311,46 @@ class AudiowaveformClient
         }
 
         $this->addParam(['output-format' => $name]);
+
+        return $this;
     }
 
+    /**
+     * @return AudiowaveformClient
+     */
     public function setSplitChannels()
     {
         $this->addParam('split-channels');
+
+        return $this;
     }
 
+    /**
+     * @param Int $level
+     * @return AudiowaveformClient
+     */
     public function setZoom(Int $level)
     {
         $this->addParam(['zoom' => $level]);
+
+        return $this;
     }
 
+    /**
+     * @param Int $pixels
+     * @return AudiowaveformClient
+     */
     public function setPixelsPerSecond(Int $pixels)
     {
         $this->addParam(['pixels-per-second' => $pixels]);
+
+        return $this;
     }
 
+    /**
+     * @param Int $bits
+     * @return AudiowaveformClient
+     */
     public function setBits(Int $bits)
     {
         if (!in_array($bits, [8, 16])) {
@@ -303,50 +358,110 @@ class AudiowaveformClient
         }
 
         $this->addParam(['bits' => $bits]);
+
+        return $this;
     }
 
+    /**
+     * @param Int $start
+     * @return AudiowaveformClient
+     */
     public function setStart(Int $start)
     {
         $this->addParam(['start' => $start]);
+
+        return $this;
     }
 
+    /**
+     * @param Int $end
+     * @return AudiowaveformClient
+     */
     public function setEnd(Int $end)
     {
         $this->addParam(['end' => $end]);
+
+        return $this;
     }
 
+    /**
+     * @param Int $width
+     * @return AudiowaveformClient
+     */
     public function setWidth(Int $width)
     {
         $this->addParam(['width' => $width]);
+
+        return $this;
     }
 
+    /**
+     * @param Int $height
+     * @return AudiowaveformClient
+     */
     public function setHeight(Int $height)
     {
         $this->addParam(['height' => $height]);
+
+        return $this;
     }
 
+    /**
+     * @return AudiowaveformClient
+     */
     public function setNoAxisLabels()
     {
         $this->addParam('no-axis-labels');
+
+        return $this;
     }
 
+    /**
+     * @return AudiowaveformClient
+     */
     public function setWithAxisLabels()
     {
         $this->addParam('with-axis-labels');
+
+        return $this;
     }
 
+    /**
+     * @param Float $scale
+     * @return AudiowaveformClient
+     */
     public function setAmplitudeScale(Float $scale)
     {
         $this->addParam(['amplitude-scale' => $scale]);
+
+        return $this;
     }
 
+    /**
+     * @param Int $level
+     * @return AudiowaveformClient
+     */
     public function setCompression(Int $level)
     {
+        if ($level < -1 || $level > 9) {
+            throw new \InvalidArgumentException("Compression has to be between -1 (default) and 9 (best).");
+        }
+
         $this->addParam(['compression' => $level]);
+
+        return $this;
     }
 
     private function execute()
     {
+        if (!array_key_exists('input-filename', $this->params) || !$this->params['input-filename']) {
+            throw new \Exception("You have to set the input file using `setInputFilename`.");
+        }
+
+        if (!array_key_exists('output-filename', $this->params) || !$this->params['output-filename']) {
+            throw new \Exception("You have to set the output file using `setOutputFilename`.");
+        }
+
         $response = Terminal::with([
                 'exec' => $this->getExecutable(),
                 'params' => implode(" ", $this->params)
@@ -383,16 +498,4 @@ class AudiowaveformClient
             $this->params[] = '--' . key($param) . ' ' . $param[0] . ' ';
         }
     }
-
-    function endsWith($haystack, $needle)
-    {
-        $length = strlen($needle);
-
-        if (!$length) {
-            return true;
-        }
-
-        return substr($haystack, -$length) === $needle;
-    }
-
 }
