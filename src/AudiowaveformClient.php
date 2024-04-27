@@ -13,7 +13,7 @@ use TitasGailius\Terminal\Terminal;
 
 /**
 # audiowaveform --help
-AudioWaveform v1.6.0
+AudioWaveform v1.10.1
 
 Usage:
   audiowaveform [options]
@@ -41,13 +41,20 @@ Options:
 --border-color arg              border color (rrggbb[aa])
 --background-color arg          background color (rrggbb[aa])
 --waveform-color arg            wave color (rrggbb[aa])
+--waveform-style arg (=normal)  waveform style (normal or bars)
+--bar-width arg (=8)            bar width (pixels)
+--bar-gap arg (=4)              bar gap (pixels)
+--bar-style arg (=square)       bar style (square or rounded)
 --axis-label-color arg          axis label color (rrggbb[aa])
 --no-axis-labels                render waveform image without axis labels
 --with-axis-labels              render waveform image with axis labels
 (default)
-  --amplitude-scale arg (=1.0)    amplitude scale
+--amplitude-scale arg (=1.0)    amplitude scale
 --compression arg (=-1)         PNG compression level: 0 (none) to 9 (best),
                                   or -1 (default)
+--raw-samplerate arg            sample rate for raw audio input (Hz)
+--raw-channels arg              number of channels for raw audio input
+--raw-format arg                format for raw audio input (s8, u8, s16le, s16be, s24le, s24be, s32le, s32be, f32le, f32be, f64le, f64be)
 **/
 class AudiowaveformClient
 {
@@ -185,6 +192,99 @@ class AudiowaveformClient
     public function setWaveformColor(string $color)
     {
         $this->addParam(['waveform-color' => $this->checkRgbColorCode($color)]);
+
+        return $this;
+    }
+
+    /**
+     * waveform style (normal or bars)
+     *
+     * @param string $style
+     * @return $this
+     */
+    public function setWaveformStyle(string $style = 'normal')
+    {
+        $this->addParam(['waveform-style' => in_array($style, ['normal', 'bars']) ? $style : 'normal']);
+
+        return $this;
+    }
+
+    /**
+     * bar style (square or rounded)
+     *
+     * @param string $style
+     * @return $this
+     */
+    public function setBarStyle(string $style = 'square')
+    {
+        $this->addParam(['bar-style' => in_array($style, ['square', 'rounded']) ? $style : 'square']);
+
+        return $this;
+    }
+
+    /**
+     * bar width (pixels)
+     *
+     * @param int $width
+     * @return $this
+     */
+    public function setBarWidth(int $width = 8)
+    {
+        $this->addParam(['bar-width' => $width]);
+
+        return $this;
+    }
+
+    /**
+     * bar gap (pixels)
+     *
+     * @param int $width
+     * @return $this
+     */
+    public function setBarGap(int $width = 4)
+    {
+        $this->addParam(['bar-width' => $width]);
+
+        return $this;
+    }
+
+    /**
+     * sample rate for raw audio input (Hz)
+     *
+     * @param int $rate
+     * @return $this
+     */
+    public function setRawSamplerate(int $rate)
+    {
+        $this->addParam(['raw-samplerate' => $rate]);
+
+        return $this;
+    }
+
+    /**
+     * number of channels for raw audio input
+     *
+     * @param int $channels
+     * @return $this
+     */
+    public function setRawChannels(int $channels)
+    {
+        $this->addParam(['raw-channels' => $channels]);
+
+        return $this;
+    }
+
+    /**
+     * format for raw audio input (s8, u8, s16le,
+     * s16be, s24le, s24be, s32le, s32be, f32le,
+     * f32be, f64le, f64be)
+     *
+     * @param string $format
+     * @return $this
+     */
+    public function setRawFormat(string $format)
+    {
+        $this->addParam(['raw-format' => in_array($format, ['s8', 'u8', 's16le', 's16be', 's24le', 's24be', 's32le', 's32be', 'f32le', 'f32be', 'f64le', 'f64be']) ? $format : 's8']);
 
         return $this;
     }
@@ -495,7 +595,7 @@ class AudiowaveformClient
         if (is_string($param)) {
             $this->params[] = '--' . $param . ' ';
         } else {
-            $this->params[] = '--' . key($param) . ' ' . $param[0] . ' ';
+            $this->params[] = '--' . key($param) . ' ' . current($param) . ' ';
         }
     }
 }
