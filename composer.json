@@ -25,7 +25,13 @@
             "podcasthosting\\AudiowaveformClient\\": "src/"
         }
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/Reached/terminal.git"
+        }
+    ],
     "require": {
-        "titasgailius/terminal": "^1.2"
+        "titasgailius/terminal": "dev-master"
     }
 }

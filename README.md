@@ -37,6 +37,7 @@ All parameters have their own setter method:
 - `setCompression(Int $level)`
 - `setCompression(Int $level)`
 - `setQuiet()`
+- and more
 
 `setInputFilename()` and `setOutputFilename()` are required.
 
