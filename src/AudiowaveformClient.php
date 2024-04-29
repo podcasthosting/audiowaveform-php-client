@@ -552,7 +552,7 @@ class AudiowaveformClient
         return $this;
     }
 
-    private function execute()
+    public function execute()
     {
         if (!array_key_exists('input-filename', $this->params) || !$this->params['input-filename']) {
             throw new \Exception("You have to set the input file using `setInputFilename`.");
