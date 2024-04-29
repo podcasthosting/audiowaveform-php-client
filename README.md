@@ -47,11 +47,13 @@ After you have set all parameters you have to call the `execute()` method to run
 $ac = new AudiowaveformClient()
 $ac->setInputFilename('my-audio-file.mp3');
 $ac->setBackgroundColor('000000');
-$ac->setPixelsPerSecond(300)->execute();
+$ac->setPixelsPerSecond(300);
+$ac->setOutputFilename('my-audio-file.dat');
+$ac->execute();
 ```
 
 You can also chain all setters:
 
 ```
-(new AudiowaveformClient)->setInputFilename('other-audio.wav')setColors('ff9900')->setPixelsPerSecond(300)->execute();
+(new AudiowaveformClient)->setInputFilename('other-audio.wav')setColors('ff9900')->setPixelsPerSecond(300)->setOutputFilename('my-audio-file.dat')->execute();
 ```

@@ -554,14 +554,6 @@ class AudiowaveformClient
 
     public function execute()
     {
-        if (!array_key_exists('input-filename', $this->params) || !$this->params['input-filename']) {
-            throw new \Exception("You have to set the input file using `setInputFilename`.");
-        }
-
-        if (!array_key_exists('output-filename', $this->params) || !$this->params['output-filename']) {
-            throw new \Exception("You have to set the output file using `setOutputFilename`.");
-        }
-
         $response = Terminal::with([
                 'exec' => $this->getExecutable(),
                 'params' => implode(" ", $this->params)
