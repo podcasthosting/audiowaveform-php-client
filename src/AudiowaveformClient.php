@@ -148,9 +148,11 @@ class AudiowaveformClient
     /**
      * @param string $publicPath
      */
-    public function setPublicPath(string $publicPath): void
+    public function setPublicPath(string $publicPath): AudiowaveformClient
     {
         $this->publicPath = $publicPath;
+
+        return $this;
     }
 
     /**
@@ -559,12 +561,13 @@ class AudiowaveformClient
 
     public function execute()
     {
-        $response = Terminal::with([
+/*        $response = Terminal::with([
                 'exec' => $this->getExecutable(),
                 'params' => implode(" ", $this->params)
             ]
         )
-            ->run('{{ $exec }} {{ $params }}');
+        ->run('{{ $exec }} {{ $params }}');*/
+        $response = Terminal::run($this->getExecutable() . ' ' . implode(" ", $this->params));
 
         if (!$response->ok()) {
             $response->throw();
@@ -590,9 +593,9 @@ class AudiowaveformClient
     private function addParam($param)
     {
         if (is_string($param)) {
-            $this->params[] = '--' . $param . ' ';
+            $this->params[] = '--' . $param;
         } else {
-            $this->params[] = '--' . key($param) . ' ' . current($param) . ' ';
+            $this->params[] = '--' . key($param) . '=' . current($param);
         }
     }
 }
