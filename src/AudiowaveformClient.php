@@ -78,6 +78,11 @@ class AudiowaveformClient
     private static array $inputTypes = ['mp3', 'wav', 'flac', 'ogg', 'opus', 'oga', 'dat'];
 
     /**
+     * @var array
+     */
+    private array $params = [];
+
+    /**
      * @var array|string[]
      */
     private static array $outputTypes = ['wav', 'dat', 'png', 'json'];
