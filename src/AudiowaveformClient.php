@@ -7,8 +7,6 @@
 
 namespace podcasthosting\AudiowaveformClient;
 
-require 'vendor/autoload.php';
-
 use TitasGailius\Terminal\Terminal;
 
 /**
