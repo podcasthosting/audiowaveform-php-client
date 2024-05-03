@@ -370,7 +370,7 @@ class AudiowaveformClient
             throw new \InvalidArgumentException("File does not have one the allowed input types (" . implode(", ", static::$inputTypes) . ")");
         }
 
-        $this->addParam(['input-filename' => $name]);
+        $this->addParam(['input-filename' => escapeshellarg($name)]);
 
         return $this;
     }
@@ -400,7 +400,7 @@ class AudiowaveformClient
             throw new \InvalidArgumentException("File does not have one the allowed input types (" . implode(", ", self::$outputTypes) . ")");
         }
 
-        $this->addParam(['output-filename' => $name]);
+        $this->addParam(['output-filename' => escapeshellarg($name)]);
 
         return $this;
     }
