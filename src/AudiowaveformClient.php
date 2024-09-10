@@ -557,7 +557,7 @@ class AudiowaveformClient
         return $this;
     }
 
-    public function execute()
+    public function execute(int $timeout = 120)
     {
 /*        $response = Terminal::with([
                 'exec' => $this->getExecutable(),
@@ -565,7 +565,7 @@ class AudiowaveformClient
             ]
         )
         ->run('{{ $exec }} {{ $params }}');*/
-        $response = Terminal::run($this->getExecutable() . ' ' . implode(" ", $this->params));
+        $response = Terminal::timeout($timeout)->run($this->getExecutable() . ' ' . implode(" ", $this->params));
 
         if (!$response->ok()) {
             $response->throw();
