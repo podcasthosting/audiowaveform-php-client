@@ -25,13 +25,15 @@
             "podcasthosting\\AudiowaveformClient\\": "src/"
         }
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/Reached/terminal.git"
+    "require-dev": {
+        "pestphp/pest": "^3.5"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
         }
-    ],
+    },
     "require": {
-        "titasgailius/terminal": "dev-master"
+        "symfony/process": "^7.2"
     }
 }

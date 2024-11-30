@@ -7,52 +7,53 @@
 
 namespace podcasthosting\AudiowaveformClient;
 
-use TitasGailius\Terminal\Terminal;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 /**
-# audiowaveform --help
-AudioWaveform v1.10.1
-
-Usage:
-  audiowaveform [options]
-
-Options:
-  --help                          show help message
--v [ --version ]                show version information
--q [ --quiet ]                  disable progress and information messages
--i [ --input-filename ] arg     input file name (.mp3, .wav, .flac, .ogg,
-                                  .oga, .opus, .dat)
-  -o [ --output-filename ] arg    output file name (.wav, .dat, .png, .json)
-  --split-channels                output multi-channel waveform data or image
-                                  files
-                                  --input-format arg              input file format (mp3, wav, flac, ogg, opus,
-    dat)
---output-format arg             output file format (wav, dat, png, json)
--z [ --zoom ] arg (=256)        zoom level (samples per pixel)
-  --pixels-per-second arg (=100)  zoom level (pixels per second)
-  -b [ --bits ] arg (=16)         bits (8 or 16)
--s [ --start ] arg (=0)         start time (seconds)
--e [ --end ] arg (=0)           end time (seconds)
--w [ --width ] arg (=800)       image width (pixels)
--h [ --height ] arg (=250)      image height (pixels)
--c [ --colors ] arg (=audacity) color scheme (audition or audacity)
---border-color arg              border color (rrggbb[aa])
---background-color arg          background color (rrggbb[aa])
---waveform-color arg            wave color (rrggbb[aa])
---waveform-style arg (=normal)  waveform style (normal or bars)
---bar-width arg (=8)            bar width (pixels)
---bar-gap arg (=4)              bar gap (pixels)
---bar-style arg (=square)       bar style (square or rounded)
---axis-label-color arg          axis label color (rrggbb[aa])
---no-axis-labels                render waveform image without axis labels
---with-axis-labels              render waveform image with axis labels
-(default)
---amplitude-scale arg (=1.0)    amplitude scale
---compression arg (=-1)         PNG compression level: 0 (none) to 9 (best),
-                                  or -1 (default)
---raw-samplerate arg            sample rate for raw audio input (Hz)
---raw-channels arg              number of channels for raw audio input
---raw-format arg                format for raw audio input (s8, u8, s16le, s16be, s24le, s24be, s32le, s32be, f32le, f32be, f64le, f64be)
+ * # audiowaveform --help
+ * AudioWaveform v1.10.1
+ *
+ * Usage:
+ * audiowaveform [options]
+ *
+* Options:
+  * --help                          show help message
+* -v [ --version ]                show version information
+* -q [ --quiet ]                  disable progress and information messages
+* -i [ --input-filename ] arg     input file name (.mp3, .wav, .flac, .ogg,
+                                  * .oga, .opus, .dat)
+  * -o [ --output-filename ] arg    output file name (.wav, .dat, .png, .json)
+  * --split-channels                output multi-channel waveform data or image
+                                  * files
+                                  * --input-format arg              input file format (mp3, wav, flac, ogg, opus,
+    * dat)
+* --output-format arg             output file format (wav, dat, png, json)
+* -z [ --zoom ] arg (=256)        zoom level (samples per pixel)
+  * --pixels-per-second arg (=100)  zoom level (pixels per second)
+  * -b [ --bits ] arg (=16)         bits (8 or 16)
+* -s [ --start ] arg (=0)         start time (seconds)
+* -e [ --end ] arg (=0)           end time (seconds)
+* -w [ --width ] arg (=800)       image width (pixels)
+* -h [ --height ] arg (=250)      image height (pixels)
+* -c [ --colors ] arg (=audacity) color scheme (audition or audacity)
+* --border-color arg              border color (rrggbb[aa])
+* --background-color arg          background color (rrggbb[aa])
+* --waveform-color arg            wave color (rrggbb[aa])
+* --waveform-style arg (=normal)  waveform style (normal or bars)
+* --bar-width arg (=8)            bar width (pixels)
+* --bar-gap arg (=4)              bar gap (pixels)
+* --bar-style arg (=square)       bar style (square or rounded)
+* --axis-label-color arg          axis label color (rrggbb[aa])
+* --no-axis-labels                render waveform image without axis labels
+* --with-axis-labels              render waveform image with axis labels
+* (default)
+* --amplitude-scale arg (=1.0)    amplitude scale
+* --compression arg (=-1)         PNG compression level: 0 (none) to 9 (best),
+                                  * or -1 (default)
+* --raw-samplerate arg            sample rate for raw audio input (Hz)
+* --raw-channels arg              number of channels for raw audio input
+* --raw-format arg                format for raw audio input (s8, u8, s16le, s16be, s24le, s24be, s32le, s32be, f32le, f32be, f64le, f64be)
 **/
 class AudiowaveformClient
 {
@@ -94,19 +95,21 @@ class AudiowaveformClient
      * Helper method to automagically find the audiowaveform command
      *
      * @return string
-     * @throws \Exception
+     * @throws ProcessFailedException
      */
     public function detectAndSetPath()
     {
-        $response = Terminal::with([
+/*        $response = Terminal::with([
             'binary' => $this->getBinaryName()])
-            ->run('whereis -b {{ $binary }}');
+            ->run('whereis -b {{ $binary }}');*/
+        $process = new Process(['whereis', escapeshellarg('-b '  . $this->getBinaryName())]);
+        $process->run();
 
-        if (!$response->ok()) {
-            $response->throw();
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
         }
 
-        $result = trim((string) $response);
+        $result = trim((string) $process->getOutput());
 
         if (strlen($result) < strlen($this->getBinaryName())+2) {
             throw new \Exception("Command " . $this->getBinaryName() . " not found. Do you have `audiowaveform` installed?");
@@ -559,19 +562,15 @@ class AudiowaveformClient
 
     public function execute(int $timeout = 120)
     {
-/*        $response = Terminal::with([
-                'exec' => $this->getExecutable(),
-                'params' => implode(" ", $this->params)
-            ]
-        )
-        ->run('{{ $exec }} {{ $params }}');*/
-        $response = Terminal::timeout($timeout)->run($this->getExecutable() . ' ' . implode(" ", $this->params));
+        $process = new Process([$this->getExecutable(), implode(" ", $this->params)]);
+        $process->setTimeout($timeout);
+        $process->run();
 
-        if (!$response->ok()) {
-            $response->throw();
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
         }
 
-        return $response;
+        return $process->getOutput();
     }
 
     private function checkRgbColorCode(string $color)
