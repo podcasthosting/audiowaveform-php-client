@@ -12,7 +12,7 @@ use Symfony\Component\Process\Process;
 
 /**
  * # audiowaveform --help
- * AudioWaveform v1.10.1
+ * AudioWaveform v1.10.3
  *
  * Usage:
  * audiowaveform [options]
