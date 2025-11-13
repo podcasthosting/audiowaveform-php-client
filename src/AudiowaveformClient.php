@@ -99,7 +99,7 @@ class AudiowaveformClient
      */
     public function detectAndSetPath()
     {
-        $process = new Process(['whereis', '-b ',  $this->getBinaryName()]);
+        $process = new Process(['whereis', '-b',  $this->getBinaryName()]);
         $process->run();
 
         if (!$process->isSuccessful()) {
@@ -370,7 +370,7 @@ class AudiowaveformClient
             throw new \InvalidArgumentException("File does not have one the allowed input types (" . implode(", ", static::$inputTypes) . ")");
         }
 
-        $this->addParam(['input-filename' => escapeshellarg($name)]);
+        $this->addParam(['input-filename' => $name]);
 
         return $this;
     }
@@ -400,7 +400,7 @@ class AudiowaveformClient
             throw new \InvalidArgumentException("File does not have one the allowed input types (" . implode(", ", self::$outputTypes) . ")");
         }
 
-        $this->addParam(['output-filename' => escapeshellarg($name)]);
+        $this->addParam(['output-filename' => $name]);
 
         return $this;
     }
@@ -559,7 +559,7 @@ class AudiowaveformClient
 
     public function execute(int $timeout = 120)
     {
-        $process = new Process([$this->getExecutable(), implode(", ", $this->params)]);
+        $process = new Process([$this->getExecutable()] + $this->params);
         $process->setTimeout($timeout);
         $process->run();
 
