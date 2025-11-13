@@ -99,10 +99,7 @@ class AudiowaveformClient
      */
     public function detectAndSetPath()
     {
-/*        $response = Terminal::with([
-            'binary' => $this->getBinaryName()])
-            ->run('whereis -b {{ $binary }}');*/
-        $process = new Process(['whereis', escapeshellarg('-b '  . $this->getBinaryName())]);
+        $process = new Process(['whereis', '-b ',  $this->getBinaryName()]);
         $process->run();
 
         if (!$process->isSuccessful()) {
@@ -562,7 +559,7 @@ class AudiowaveformClient
 
     public function execute(int $timeout = 120)
     {
-        $process = new Process([$this->getExecutable(), implode(" ", $this->params)]);
+        $process = new Process([$this->getExecutable(), implode(", ", $this->params)]);
         $process->setTimeout($timeout);
         $process->run();
 
