@@ -559,7 +559,7 @@ class AudiowaveformClient
 
     public function execute(int $timeout = 120)
     {
-        $process = new Process([$this->getExecutable()] + $this->params);
+        $process = new Process(array_merge([$this->getExecutable()], $this->params));
         $process->setTimeout($timeout);
         $process->run();
 
